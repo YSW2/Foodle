@@ -1,2 +1,2 @@
 # Foodle
-2023-01 Software Engeenering TeamProject
+2023-01 Ajou Univ. Software Engeenering TeamProject
