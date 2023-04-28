@@ -9,6 +9,9 @@
         <p style="color:red">{{ error }}</p>
     {% endif %}
     <form method="post">
+        <label>name:</label>
+        <input type="text" name="name" required>
+        <br>
         <label>Username:</label>
         <input type="text" name="username" required>
         <br>
@@ -20,9 +23,6 @@
         <br>
         <label>birth:</label>
         <input type="text" name="birth" required>
-        <br>
-        <label>name:</label>
-        <input type="text" name="name" required>
         <br>
         <input type="submit" value="Register">
     </form>

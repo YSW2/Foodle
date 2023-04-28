@@ -9,9 +9,11 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), nullable=False)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=True)
+    birth = db.Column(db.Integer, nullable=False)
 
 
 @app.route('/')
@@ -22,9 +24,11 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        name = request.form['name']
         username = request.form['username']  # POST 요청으로부터 username 파라미터 추출
         password = request.form['password']  # POST 요청으로부터 password 파라미터 추출
         email = request.form['email']
+        birth = request.form['birth']
         
         if not checkPwLen(password):
             return render_template('register.html', error='비밀번호는 4자리 이상 설정 가능합니다.')
@@ -35,7 +39,9 @@ def register():
         if not checkEmailForm(email):
             return render_template('register.html', error='이메일 형식이 올바르지 않습니다.')
 
-        user = User(username=username, password=password, email=email)  # User 모델 객체 생성
+        user = User(
+            name=name, username=username, password=password, email=email, birth=birth
+            )  # User 모델 객체 생성
         db.session.add(user)  # 데이터베이스에 추가
         db.session.commit()  # 변경사항 저장
         return redirect('/login')  # 로그인 페이지로 리다이렉트
