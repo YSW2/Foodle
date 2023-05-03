@@ -1,7 +1,7 @@
 # Foodle
 2023-01 Ajou Univ. Software Engeenering TeamProject
 
-# Test
+## Test
 ```
 pip install flask
 ```
@@ -11,7 +11,7 @@ flaks run #on main directory
 
 http://127.0.0.1:5000/
 
-# St.
+## St.
 
 /auth/...
 
