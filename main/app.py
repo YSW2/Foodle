@@ -28,11 +28,11 @@ def create_app():
     from home.home import home as home_blueprint
 
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
-    app.register_blueprint(home_blueprint)
+    app.register_blueprint(home_blueprint, url_prefix="/home")
 
     # '/' 경로로 접속 시 auth 블루프린트의 login 함수로 리다이렉트
     @app.route('/')
     def index():
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('home.dashboard'))
 
     return app
