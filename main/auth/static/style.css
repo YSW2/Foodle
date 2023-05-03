@@ -1,0 +1,60 @@
+
+.TopBar{
+  display: flex;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Name{
+  font-size: 60px;
+  margin-bottom: 30px;
+}
+
+.LoginForm{
+  width: 400px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgb(236, 182, 89);
+  border-radius: 10px;
+  
+}
+
+.Input-Form{
+  margin: 5px;
+  height: 30px;
+}
+
+.LoginRegister{
+  display: flex;
+  width: 400px;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+
+#registerlink{
+  margin-right: 108px;
+  font-size: 15px;
+}
+
+#loginbutton{
+  margin-left: 108px;
+  height: 20px;
+  line-height: 1px;
+  color: white;
+}
+
+#msg {
+  height: 30px;
+  text-align:center;
+  font-size:16px;
+  color:red;
+  margin-bottom: 20px;
+}

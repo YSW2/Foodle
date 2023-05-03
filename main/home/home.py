@@ -11,4 +11,4 @@ def dashboard():
         # dashboard.html 렌더링
         return render_template('dashboard.html', user=user)
     else:
-        return redirect('/login')  # 세션에 user_id가 없는 경우 로그인 페이지로 리다이렉트
+        return redirect('/')  # 세션에 user_id가 없는 경우 로그인 페이지로 리다이렉트
