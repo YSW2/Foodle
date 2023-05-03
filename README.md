@@ -9,20 +9,27 @@ pip install flask
 flaks run #on main directory
 ```
 
-http://127.0.0.1:5000/
+http://127.0.0.1:5000/ 링크 이용
 
 testId: test1
 
 testPw: 1234
 
-## St.
+## Link
 
-/auth/...
+- /auth/
 
-/dashboard/...
+login
 
-*.py -> Main server code
+register
 
-template directory -> *.html
+- /dashboard/
 
-static directory -> *.css
+## File
+
+- *.py -> Main server code
+
+- *.html -> templates directory에 저장
+
+- *.css -> static directory에 저장
+
