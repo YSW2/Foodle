@@ -19,9 +19,9 @@ testPw: 1234
 
 - /auth/
 
-login
+ login
 
-register
+ register
 
 - /dashboard/
 
