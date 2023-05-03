@@ -33,3 +33,6 @@ testPw: 1234
 
 - *.css -> static directory에 저장
 
+- DB -> instance directory
+
+- ORM -> migrate directory
