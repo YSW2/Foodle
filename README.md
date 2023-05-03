@@ -1,8 +1,8 @@
 # Foodle
 2023-01 Ajou Univ. Software Engeenering TeamProject
 
-#Test
-
+# Test
 ```
-asf
+pip install flask
+flask run //main directory
 ```
