@@ -23,7 +23,7 @@ testPw: 1234
 
  register
 
-- /dashboard/
+- /home/
 
 ## File
 
