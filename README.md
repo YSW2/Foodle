@@ -11,6 +11,10 @@ flaks run #on main directory
 
 http://127.0.0.1:5000/
 
+testId: test1
+
+testPw: 1234
+
 ## St.
 
 /auth/...
