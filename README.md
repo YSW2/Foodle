@@ -25,6 +25,12 @@ testPw: 1234
 
 - /home/
 
+- /board/
+
+ upload
+ 
+ <int:post_id>
+ 
 ## File
 
 - *.py -> Main server code
