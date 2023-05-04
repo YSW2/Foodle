@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>New Post</title>
+  </head>
+  <body>
+    <h1>New Post</h1>
+    <form method="POST" action="{{ url_for('board.write_post') }}">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required><br><br>
+      <label for="author">Author:</label>
+      <input type="text" id="author" name="author" required><br><br>
+      <label for="content">Content:</label><br>
+      <textarea id="content" name="content" rows="10" cols="50" required></textarea><br><br>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

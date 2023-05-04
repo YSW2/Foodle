@@ -1,0 +1,14 @@
+{% block content %}
+  <h1>Posts</h1>
+  <ul>
+    {% for post in posts %}
+      <li>
+        <a href="{{ url_for('board.show_post', post_id=post.id) }}">
+          {{ post.title }} ({{ post.author }} - {{ post.created_at.strftime('%Y-%m-%d %H:%M') }})
+        </a>  
+        <br>
+        Views: {{ post.views }} &nbsp;&nbsp; Likes: {{ post.likes }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
