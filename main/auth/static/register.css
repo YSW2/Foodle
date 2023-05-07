@@ -1,0 +1,81 @@
+
+.TopBar{
+  display: flex;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Name{
+  font-size: 60px;
+  margin-bottom: 0px;
+  padding-top: 30px
+}
+
+.RegisterForm{
+  width: 400px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgb(236, 182, 89);
+  border-radius: 10px;
+  
+}
+
+.Input-Form{
+  margin: 5px;
+  height: 30px;
+}
+
+.Date-Form{
+  width: 5cm;
+  padding-bottom: 20px;
+}
+
+.Register{
+    display: flex;
+    width: 400px;
+    justify-content: center;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    align-items: stretch;
+    flex-direction: column;
+}
+
+#loginlink{
+  font-size: 15px;
+  margin-left: 155px;
+  margin-bottom: 30px;
+}
+
+#registerbutton{
+  margin-left: 108px;
+  margin-right: 108px;
+  margin-bottom: 5px;
+  height: 20px;
+  line-height: 1px;
+  color: white;
+}
+
+#dpulicatebutton{
+  margin-left: 108px;
+  margin-right: 108px;
+  margin-bottom: 5px;
+  height: 20px;
+  line-height: 1px;
+  color: white;
+}
+
+#msg {
+  height: 30px;
+  text-align:center;
+  font-size:16px;
+  color:red;
+  margin-bottom: 20px;
+}

@@ -6,6 +6,15 @@ from auth import auth
 import hashlib
 import re
 
+username = ''
+
+@auth.context_processor
+def today_date():
+    return dict(datetime=datetime)
+
+@auth.context_processor
+def avail_id():
+    return dict(avail_id=username)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -14,27 +23,36 @@ def register():
         username = request.form['username']  # POST 요청으로부터 username 파라미터 추출
         password = request.form['password']  # POST 요청으로부터 password 파라미터 추출
         email = request.form['email']
-        birth = str(request.form['birth'])
+        birth = datetime.strptime(request.form['birth'], '%Y-%m-%d')
 
-        if not checkPwLen(password):
-            return render_template('register.html', error='비밀번호는 4자리 이상 설정 가능합니다.')
+        if "id_check_form" in request.form:
+            if len(username) == 0:
+                return render_template('register.html', error='ID를 입력해주세요.')
+            available_id = checkDupId(username)
+            if not available_id:
+                return render_template('register.html', error='이미 사용중인 ID 입니다.')
+            else:
+                return render_template('register.html', avail='사용 가능한 ID입니다.')
+        
+        elif "register_btn" in request.form:
+            if len(name) == 0 or len(username) == 0 or len(password) == 0 or len(email) == 0:
+                return render_template('register.html', error='정확한 정보를 입력해주세요.')
+            
+            if not checkPwLen(password):
+                return render_template('register.html', error='비밀번호는 4자리 이상 설정 가능합니다.')
 
-        if not checkDupId(username):
-            return render_template('register.html', error='이미 사용중인 ID 입니다.')
-
-        if not checkEmailForm(email):
-            return render_template('register.html', error='이메일 형식이 올바르지 않습니다.')
-
-        if not checkBirthForm(birth):
-            return render_template('register.html', error='생년월일을 올바르게 입력해주세요.')
-
-        user = User(
-            name=name, username=username, password=hash_password(password), email=email, birth=datetime(int(birth[:4]), int(birth[4:6]), int(birth[6:8]))
-        )  # User 모델 객체 생성
-        db.session.add(user)  # 데이터베이스에 추가
-        db.session.commit()  # 변경사항 저장
-        return redirect(url_for('auth.login'))  # 로그인 페이지로 리다이렉트
-    return render_template('register.html')  # GET 요청일 경우 register.html 렌더링
+            if not checkEmailForm(email):
+                return render_template('register.html', error='이메일 형식이 올바르지 않습니다.')
+            
+            user = User(
+                name=name, username=username, password=hash_password(password), email=email, birth=birth
+            )  # User 모델 객체 생성
+            db.session.add(user)  # 데이터베이스에 추가
+            db.session.commit()  # 변경사항 저장
+            return redirect(url_for('auth.login'))  # 로그인 페이지로 리다이렉트
+        
+    elif request.method == 'GET':
+        return render_template('register.html', datetime=datetime)  # GET 요청일 경우 register.html 렌더링
 
 
 def hash_password(password):
@@ -48,7 +66,7 @@ def checkPwLen(password):
         return False
     else:
         return True
-
+    
 
 def checkDupId(user_id):
     dup_user_id = User.query.filter_by(
