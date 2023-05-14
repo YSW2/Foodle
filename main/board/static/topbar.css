@@ -1,0 +1,29 @@
+#Topbar{
+  width : 100%;
+}
+
+ul {
+  list-style-type: none;
+  height: 48px;
+  width: 100%;
+  background-color: rgb(245, 200, 124);
+  display: flex;
+}
+
+ul > li {
+  color: black;
+  height: 100%;
+  width: 530px;
+  display: flex;
+  font-weight: bold;
+  flex-direction: row;
+  align-items: center;
+}
+
+#logo {
+  color:white;
+  font-size: 18px;
+  padding-left:40px;
+  margin-right:auto;
+  display: flex;
+}

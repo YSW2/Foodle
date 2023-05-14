@@ -1,0 +1,32 @@
+.PostInfo{
+  display: grid;
+  grid-template-columns: 2fr 3fr 6fr 1fr 1fr 2fr;
+  justify-content: center;
+}
+
+.PostId{
+  grid-column: 1/1;
+  text-align :center
+}
+
+.PostAuthor{
+  grid-column: 2/2;
+  text-align :center
+}
+
+.PostTitle{
+  grid-column: 3/3;
+  text-align :center
+}
+
+.PostView{
+  grid-column: 4/4;
+}
+
+.PostLike{
+  grid-column: 5/5;
+}
+
+.PostTime{
+  grid-column: 6/6;
+}

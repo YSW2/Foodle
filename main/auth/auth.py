@@ -109,6 +109,7 @@ def login():
             username=username, password=hash_password(password)).first()
         if user is not None:
             session['user_id'] = user.id  # 세션에 user_id 추가
+            session['username'] = user.name
             return redirect(url_for('home.dashboard'))  # 대시보드 페이지로 리다이렉트
         else:
             # username 또는 password가 일치하지 않을 경우 login.html 렌더링
