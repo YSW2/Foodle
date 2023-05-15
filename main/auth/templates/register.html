@@ -25,17 +25,11 @@
     
       <form method="post" class="RegisterForm">
         <div class="Name">Foodle</div>
-        <div id="msg">
-          {% if error %}
-          <p style="color:red">{{ error }}</p>
-          {% endif %}</div>
-
-          {% if avail %}
-          <p style="color:green">{{ avail }}</p>
-          {% endif %}</div>
+        <div id="error-message" style="color:red"></div>
+        <div id="avail-message" style="color:green"></div>
 
         <label for="">아이디</label>
-        <input class="Input-Form" type="text" name="username" placeholder="ID" autofocus placeholder="8~12자리의 영대소문자와 숫자 조합" value="{{ avail_id }}">
+        <input class="Input-Form" type="text" name="username" placeholder="ID" autofocus>
 
         <label for="">비밀번호</label>
         <input input class="Input-Form" type="password" name="password" placeholder="비밀번호">
@@ -50,9 +44,81 @@
         <input class="Date-Form" type="date" name="birth" value="{{ datetime.today().date().isoformat() }}"> 
 
         <div class="Register">
-          <button type="submit" class="btn btn-warning" name="register_btn" id="registerbutton">회원가입</button>
-          <button type="submit" class="btn btn-warning" name="id_check_form" id="dpulicatebutton">ID중복체크</button>
+          <button type="button" class="btn btn-warning" id="registerbutton" onclick="checkForm()">회원가입</button>
+          <button type="button" class="btn btn-warning" id="dpulicatebutton" onclick="checkId()">ID중복체크</button>
           <a href="/auth/login" class="LoginLink" id="loginlink">로그인 화면</a>
         </div>
+        <script>
+         function checkId() {
+            // username 변수에 id가 'username'인 요소의 값을 할당
+            var username = document.getElementsByName('username')[0].value;
+            // fetch 함수를 사용하여 'check_id' URL로 POST 요청을 보냄
+            fetch('check_id', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                // 요청 바디에 JSON 형식으로 username 값을 담아 보냄
+                body: JSON.stringify({ username: username })
+            })
+            // 응답을 JSON 형식으로 파싱하여 처리
+            .then(response => response.json())
+            .then(data => {
+                // id가 'message'인 요소를 찾아 message 값을 할당
+                var messageElem = document.getElementById('error-message');
+                messageElem.innerText = data.message;
+            });
+        }
+        function checkForm() {
+          const name = document.getElementsByName('name')[0].value;
+          const username = document.getElementsByName('username')[0].value;
+          const password = document.getElementsByName('password')[0].value;
+          const email = document.getElementsByName('email')[0].value;
+          const birth = document.getElementsByName('birth')[0].value;
+
+          // API에 POST 요청을 보냅니다.
+          fetch('check_form', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: name,
+              username: username,
+              password: password,
+              email: email,
+            })
+          }).then(response => {
+            if (response.ok) {
+              // 데이터가 유효한 경우, 회원가입 API를 호출하여 회원가입을 진행합니다.
+              fetch('register', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  name: name,
+                  username: username,
+                  password: password,
+                  email: email,
+                  birth: birth
+                })
+              })
+              .then(response => {
+                if (response.ok) {
+                  // 회원가입이 성공한 경우 로그인 페이지로 리다이렉트
+                  window.location.href = '/auth/login';
+                }
+              })
+            } else {
+              // 데이터가 유효하지 않은 경우, 에러 메시지를 출력합니다.
+              response.json().then(data => {
+                const error = data.error;
+                document.getElementById('error-message').textContent = error;
+              });
+            }
+          }).catch(error => {
+            console.error('Error:', error);
+          });
+        }
+        </script>
   </body>
 </html>
