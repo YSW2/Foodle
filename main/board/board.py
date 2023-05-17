@@ -1,4 +1,4 @@
-from flask import render_template, redirect, session, url_for, request
+from flask import render_template, redirect, session, url_for, request, jsonify
 from board.post_models import Post
 from app import db
 from board import board
@@ -30,12 +30,18 @@ def write_post():
     return render_template('write.html')  # GET 요청일 경우 게시물 작성 페이지 렌더링
 
 
-@board.route('/<int:post_id>', methods=['GET', 'POST'])
+@board.route('/<int:post_id>', methods=['GET'])
 def show_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if request.method == 'POST':
-        post.like += 1
-        db.session.commit()
     post.view += 1
     db.session.commit()
     return render_template('post.html', post=post)
+
+
+@board.route('/<int:post_id>', methods=['POST'])
+def Like_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    post.like += 1
+    db.session.commit()
+    response = {'like': post.like}
+    return jsonify(response)
