@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 2fr 3fr 6fr 1fr 1fr 2fr;
   justify-content: center;
+  text-align: center;
 }
 
 .PostId{
@@ -29,4 +30,20 @@
 
 .PostTime{
   grid-column: 6/6;
+}
+
+.Post-Container{
+  display: grid;
+  justify-items: center;
+}
+
+.input-group {
+  width: 60%;
+}
+
+.WriteRanking{
+  display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+    justify-items: center;
 }

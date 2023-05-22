@@ -6,6 +6,7 @@ import secrets
 # SQLAlchemy와 Migrate 객체 생성
 db = SQLAlchemy()
 migrate = Migrate()
+DB_NAME = "database.db"
 
 # Flask 애플리케이션 생성
 
@@ -16,10 +17,7 @@ def create_app():
     # 애플리케이션 설정
     app.config['SECRET_KEY'] = secrets.token_hex(16)  # 시크릿 키 생성
     # 데이터베이스 경로 설정
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite'
-    app.config['SQLALCHEMY_BINDS'] = {
-        'post': 'sqlite:///post.sqlite'
-    }
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
     # SQLAlchemy와 Migrate 객체 초기화
     db.init_app(app)

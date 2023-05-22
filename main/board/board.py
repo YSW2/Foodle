@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, url_for, request, jsonify
-from board.post_models import Post
+from models import Post
 from app import db
 from board import board
 from datetime import datetime
@@ -20,9 +20,10 @@ def write_post():
         title = request.form['title']  # 제목 가져오기
         content = request.form['content']  # 내용 가져오기
         author = session['username']  # 작성자 정보 가져오기
+        user_id = session['user_id']
         now = datetime.now()  # 현재 시간 가져오기
         new_post = Post(title=title, content=content, author=author,
-                        created_at=now, view=0, like=0)  # 새로운 게시물 생성
+                        created_at=now, view=0, like=0, user_id=user_id)  # 새로운 게시물 생성
         post_db_session = db.session(bind='post')  # 게시물 DB 세션 생성
         post_db_session.add(new_post)  # 새로운 게시물 추가
         post_db_session.commit()  # DB에 반영

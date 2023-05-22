@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, url_for
-from auth.models import User
+from models import User
 from home import home
 
 

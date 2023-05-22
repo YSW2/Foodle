@@ -1,5 +1,5 @@
 from flask import render_template, redirect, request, session, url_for, jsonify
-from auth.models import User
+from models import User
 from datetime import datetime
 from app import db
 from auth import auth
