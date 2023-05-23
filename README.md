@@ -31,6 +31,8 @@ testPw: 1234
  
  <int:post_id>
  
+ - /myfridge/
+ 
 ## File
 
 - *.py -> Main server code
