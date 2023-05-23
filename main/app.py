@@ -27,10 +27,12 @@ def create_app():
     from auth.auth import auth as auth_blueprint
     from home.home import home as home_blueprint
     from board.board import board as board_blueprint
+    from fridge.fridge import fridge as fridge_blueprint
 
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
     app.register_blueprint(home_blueprint, url_prefix="/home")
     app.register_blueprint(board_blueprint, url_prefix="/board")
+    app.register_blueprint(fridge_blueprint, url_prefix="/myfridge")
 
     with app.app_context():
         db.create_all()

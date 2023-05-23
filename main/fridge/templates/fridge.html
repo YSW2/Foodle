@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>냉장고 목록</title>
+</head>
+<body>
+    <h1>냉장고 목록</h1>
+    
+    <form method="POST" action="{{ url_for('fridge.updatefridge') }}">
+        <label for="food_name">음식 이름:</label>
+        <input type="text" id="food" name="food" required>
+        
+        <label for="expiration_date">유통기한: </label>
+        <input type="text" id="exp_date" name="exp_date" placeholder="YYYYMMDD">
+        
+        <button type="submit">저장</button>
+    </form>
+    
+    <h2>냉장고 목록</h2>
+    <h3>{{ user_name }}</h3>
+    <ul>
+        {% for fridge_food in foods %}
+            <li>{{ fridge_food.food }} - 유통기한: {{ fridge_food.exp_date }} </li>
+            <form method="POST" action="{{ url_for('fridge.deletefood', food_id=fridge_food.id) }}" onsubmit="return confirmDelete();">
+                <button type="submit">삭제</button>
+            </form>
+        {% endfor %}
+    </ul>
+    
+    <script>
+        function confirmDelete() {
+            return confirm("정말로 삭제하시겠습니까?");
+        }
+    </script>
+    <a href="/">Home</a>
+</body>
+</html>

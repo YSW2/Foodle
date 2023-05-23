@@ -24,3 +24,12 @@ class Post(db.Model):
     like = db.Column(db.Integer, default=0)
     view = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+class Fridge(db.Model):
+    __tablename__ = 'fridge'
+
+    id = db.Column(db.Integer, primary_key=True)
+    food = db.Column(db.Text, nullable=False)
+    exp_date = db.Column(db.Date, nullable=True)
+    user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
