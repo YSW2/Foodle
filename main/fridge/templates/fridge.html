@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="static/fridge.css">
+
     <title>냉장고 목록</title>
 </head>
 <body>
-    <h1>냉장고 목록</h1>
+    <h1>나만의 냉장고</h1>
     
     <form method="POST" action="{{ url_for('fridge.updatefridge') }}">
         <label for="food_name">음식 이름:</label>
@@ -16,7 +18,7 @@
         <button type="submit">저장</button>
     </form>
     
-    <h2>냉장고 목록</h2>
+    <h2>목록</h2>
     <h3>{{ user_name }}</h3>
     <ul>
         {% for fridge_food in foods %}
@@ -26,10 +28,45 @@
             </form>
         {% endfor %}
     </ul>
-    
+    <button id="rec_button" class="rec_button" onclick="recommendRecipe('recommendation')">AI 추천</button>
+    <button id="ret_button" class="ret_button" onclick="recommendRecipe('retry')">재추천</button>
+    <div id="loader" class="loader"></div>
+    <div id="recipe"></div>
     <script>
         function confirmDelete() {
             return confirm("정말로 삭제하시겠습니까?");
+        }
+
+        function recommendRecipe(request) {
+            // Fetch 요청 보내기
+            const loader = document.getElementById("loader");
+            const rec_button = document.getElementById("rec_button")
+            const ret_button = document.getElementById("ret_button")
+
+            document.getElementById('recipe').innerHTML = '';
+            loader.style.display = "block";
+            ret_button.style.display = "none";
+            rec_button.style.display = "none";
+
+            fetch('recommend_recipe', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "text/plain",
+                },
+                body: request,
+            })
+            .then(response => response.json())
+            .then(data => {
+                var recipe = data.recipe;
+                loader.style.display = "none";
+                // 추천된 레시피 표시
+                document.getElementById('recipe').innerHTML = '<pre>' + recipe + '</pre>';
+                ret_button.style.display = "block";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loader.style.display = "none";
+            });
         }
     </script>
     <a href="/">Home</a>

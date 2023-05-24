@@ -63,7 +63,7 @@ def show_post(post_id):
     post = Post.query.get_or_404(post_id)
     post.view += 1
     db.session.commit()
-    return render_template('post.html', post=post,page=page,per_page=per_page,option=option,keyword=keyword)
+    return render_template('post.html', post=post, page=page, per_page=per_page, option=option, keyword=keyword)
 
 
 @board.route('/<int:post_id>', methods=['POST'])

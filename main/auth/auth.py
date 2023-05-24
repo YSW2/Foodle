@@ -27,6 +27,7 @@ def check_id():
 
     return jsonify(result)
  
+
 @auth.route('/check_form', methods=['POST'])
 def check_form():
     name = request.get_json()['name']
@@ -114,6 +115,7 @@ def checkBirthForm(birth):
         return True
     except ValueError:
         return False
+    
     
 @auth.route('/login', methods=['GET', 'POST'])
 def login():

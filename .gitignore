@@ -16,6 +16,7 @@ pyvenv.cfg
 pip-selfcheck.json
 
 __pycache__/
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -36,3 +37,5 @@ __pycache__/
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,venv
+
+.env
