@@ -3,11 +3,15 @@ from models import Post
 from app import db
 from board import board
 from datetime import datetime
+from flask_paginate import Pagination, get_page_args
 
 
 @board.route('/', methods=['GET', 'POST'])
 def list_post():
-    posts = Post.query.order_by(Post.created_at.asc()).all() # 최신순으로 게시글 정렬
+    page = request.args.get('page',type=int,default=1)
+    per_page = request.args.get('per_page',type=int,default=10)
+    posts = Post.query.order_by(Post.created_at.desc()) # 최신순으로 게시글 정렬
+    posts = posts.paginate(page=page,per_page=per_page)
     return render_template('list_post.html', posts=posts)
 
 
@@ -20,10 +24,9 @@ def write_post():
         title = request.form['title']  # 제목 가져오기
         content = request.form['content']  # 내용 가져오기
         author = session['username']  # 작성자 정보 가져오기
-        user_id = session['user_id']
         now = datetime.now()  # 현재 시간 가져오기
         new_post = Post(title=title, content=content, author=author,
-                        created_at=now, view=0, like=0, user_id=user_id)  # 새로운 게시물 생성
+                        created_at=now, view=0, like=0)  # 새로운 게시물 생성
         post_db_session = db.session(bind='post')  # 게시물 DB 세션 생성
         post_db_session.add(new_post)  # 새로운 게시물 추가
         post_db_session.commit()  # DB에 반영
@@ -46,3 +49,17 @@ def Like_post(post_id):
     db.session.commit()
     response = {'like': post.like}
     return jsonify(response)
+
+# paging 테스트를 위해 , 게시물 100개 작성
+@board.route('/hiddencreate')
+def create_posts():
+    for i in range(1, 101):
+        title = f"게시물 제목 {i}"
+        content = f"게시물 내용 {i}"
+        author = f"작성자 {i}"
+        new_post = Post(title=title, content=content, author=author,
+                        created_at=datetime.now(), view=0, like=0)  # 새로운 게시물 생성
+        db.session.add(new_post)  # 새로운 게시물 추가
+    db.session.commit()
+    print("게시물 생성이 완료되었습니다.")
+    return redirect(url_for('board.list_post'))

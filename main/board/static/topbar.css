@@ -2,7 +2,7 @@
   width : 100%;
 }
 
-ul {
+.Topul {
   list-style-type: none;
   height: 48px;
   width: 100%;
@@ -10,7 +10,7 @@ ul {
   display: flex;
 }
 
-ul > li {
+.Topli {
   color: black;
   height: 100%;
   width: 530px;

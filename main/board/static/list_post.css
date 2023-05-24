@@ -1,6 +1,6 @@
 .PostInfo{
   display: grid;
-  grid-template-columns: 2fr 3fr 6fr 1fr 1fr 2fr;
+  grid-template-columns: 2fr 2fr 6fr 1fr 1fr 2fr;
   justify-content: center;
   text-align: center;
 }
@@ -46,4 +46,17 @@
     grid-template-columns: 2fr 1fr;
     align-items: center;
     justify-items: center;
+}
+
+.page-link {
+  color : rgb(245, 200, 124);
+}
+
+.page-item.active .page-link {
+    background-color: rgb(245, 200, 124);
+    border-color: rgb(245, 200, 124);
+}
+.per_page{
+  display: flex;
+  margin-top: 10px;
 }
