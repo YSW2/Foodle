@@ -26,10 +26,10 @@ def updatefridge():
     exp_date_str = request.form['exp_date']
     user_id = session['user_id']
     
+    
     # 유통기한이 비어있으면 None으로 설정
     if not exp_date_str:
         exp_date = None
-    
     else:
         exp_date = datetime.strptime(exp_date_str, '%Y%m%d').date()
 

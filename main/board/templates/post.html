@@ -13,9 +13,10 @@
     <form method="POST" id="LikeBtn">
       <button type="submit">좋아요</button>
     </form>
-    <form action="{{ url_for('board.list_post') }}">
-      <button type="submit">목록</button>
-    </form>
+    
+    <a href="{{ url_for('board.list_post',page=page,per_page=per_page,option=option,keyword=keyword) }}">
+      목록
+    </a>
 
     <script>
       $(document).ready(function() {

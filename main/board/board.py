@@ -3,16 +3,34 @@ from models import Post
 from app import db
 from board import board
 from datetime import datetime
-from flask_paginate import Pagination, get_page_args
+from flask_paginate import Pagination,  get_page_args
+from sqlalchemy import or_
+import random
 
 
 @board.route('/', methods=['GET', 'POST'])
 def list_post():
     page = request.args.get('page',type=int,default=1)
     per_page = request.args.get('per_page',type=int,default=10)
-    posts = Post.query.order_by(Post.created_at.desc()) # 최신순으로 게시글 정렬
+    option = request.args.get('option',type=str,default='T')
+    keyword = request.args.get('keyword',type=str,default='')
+    print(request.args)
+    posts = Post.query.order_by(Post.created_at.desc())  # 최신순으로 게시글 정렬
+    
+        # 제목으로 검색
+    if option == 'T' and keyword != '':
+        posts = posts.filter(Post.title.ilike(f"%{keyword}%"))
+
+        # 내용으로 검색
+    elif option == 'C' and keyword != '':
+        posts = posts.filter(Post.content.ilike(f"%{keyword}%"))
+
+        # 제목 또는 내용으로 검색
+    elif option == 'TC' and keyword != '':
+        posts = posts.filter(or_(Post.title.ilike(f"%{keyword}%"), Post.content.ilike(f"%{keyword}%")))
+        
     posts = posts.paginate(page=page,per_page=per_page)
-    return render_template('list_post.html', posts=posts)
+    return render_template('list_post.html', posts=posts,option=option,keyword=keyword)
 
 
 @board.route('/upload', methods=['GET', 'POST'])
@@ -36,10 +54,16 @@ def write_post():
 
 @board.route('/<int:post_id>', methods=['GET'])
 def show_post(post_id):
+    page = request.args.get('page',type=int,default=1)
+    per_page = request.args.get('per_page',type=int,default=10)
+    option = request.args.get('option',type=str,default='T')
+    keyword = request.args.get('keyword',type=str,default='')
+    print(request.args)
+    
     post = Post.query.get_or_404(post_id)
     post.view += 1
     db.session.commit()
-    return render_template('post.html', post=post)
+    return render_template('post.html', post=post,page=page,per_page=per_page,option=option,keyword=keyword)
 
 
 @board.route('/<int:post_id>', methods=['POST'])
@@ -50,12 +74,13 @@ def Like_post(post_id):
     response = {'like': post.like}
     return jsonify(response)
 
+
 # paging 테스트를 위해 , 게시물 100개 작성
 @board.route('/hiddencreate')
 def create_posts():
     for i in range(1, 101):
         title = f"게시물 제목 {i}"
-        content = f"게시물 내용 {i}"
+        content = f"게시물 내용 {random.randint(1, 100)}"
         author = f"작성자 {i}"
         new_post = Post(title=title, content=content, author=author,
                         created_at=datetime.now(), view=0, like=0)  # 새로운 게시물 생성
