@@ -8,6 +8,7 @@ import openai_api.openai_api as openai_api
 
 openai_bot = openai_api.openai_bot()
 
+
 @fridge.route('/', methods=['GET'])
 def myfridge():
     if 'user_id' not in session:
