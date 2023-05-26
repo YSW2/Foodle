@@ -7,7 +7,8 @@
   height: 48px;
   width: 100%;
   background-color: rgb(245, 200, 124);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
 }
 
 .Topli {
@@ -22,13 +23,13 @@
 
 .Topa {
   color: black;
-  height: 100%;
-  width: 530px;
+  /* height: 100%; */
+  /* width: 70px; */
   display: flex;
   font-weight: bold;
-  flex-direction: row;
-  align-items: center;
   text-decoration: none;
+  align-items: center;
+  flex-direction: row;
 }
 
 #logo {
@@ -37,4 +38,12 @@
   padding-left:40px;
   margin-right:auto;
   display: flex;
+}
+
+#init{
+  width: 50px;
+}
+
+#mainpage{
+  width: 160px
 }
