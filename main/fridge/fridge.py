@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, session, jsonify
+from flask import render_template, request, redirect, url_for, session, jsonify ,abort
 from fridge import fridge
 from app import db
 from models import Fridge
@@ -25,6 +25,13 @@ def updatefridge():
     exp_date_str = request.form['exp_date']
     user_id = session['user_id']
     
+    # user_id에 해당하는 냉장고 음식 개수 조회
+    food_count = Fridge.query.filter_by(user_id=user_id).count()
+
+    # 냉장고 음식 개수가 30개 이상이면 오류 발생
+    if food_count >= 30:
+        abort(403)  # Forbidden error
+    
 
     # 유통기한이 비어있으면 None으로 설정
     if not exp_date_str:
@@ -38,6 +45,10 @@ def updatefridge():
     db.session.commit()
 
     return redirect(url_for('fridge.myfridge'))
+
+@fridge.errorhandler(403)
+def handle_403_error(e):
+    return "30개를 초과하여 추가할 수 없습니다."
 
 
 @fridge.route('/delete/<int:food_id>', methods=['POST'])

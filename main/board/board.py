@@ -29,7 +29,8 @@ def list_post():
         posts = posts.filter(or_(Post.title.ilike(f"%{keyword}%"), Post.content.ilike(f"%{keyword}%")))
         
     posts = posts.paginate(page=page,per_page=per_page)
-    return render_template('list_post.html', posts=posts, option=option, keyword=keyword)
+    return render_template('list_post.html', posts=posts,option=option,keyword=keyword)
+
 
 
 @board.route('/upload', methods=['GET', 'POST'])
@@ -61,7 +62,8 @@ def show_post(post_id):
     post = Post.query.get_or_404(post_id)
     post.view += 1
     db.session.commit()
-    return render_template('post.html', post=post, page=page, per_page=per_page, option=option, keyword=keyword)
+    return render_template('post.html', post=post,page=page,per_page=per_page,option=option,keyword=keyword)
+
 
 
 @board.route('/<int:post_id>', methods=['POST'])
@@ -76,10 +78,11 @@ def Like_post(post_id):
 @board.route('/delete/<int:post_id>', methods=['POST'])
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
-    page = request.args.get('page', type=int, default=1)
-    per_page = request.args.get('per_page', type=int, default=10)
-    option = request.args.get('option', type=str, default='T')
-    keyword = request.args.get('keyword', type=str, default='')
+    page = request.args.get('page',type=int,default=1)
+    per_page = request.args.get('per_page',type=int,default=10)
+    option = request.args.get('option',type=str,default='T')
+    keyword = request.args.get('keyword',type=str,default='')
+
     
     # 게시물 작성자와 로그인한 사람이 동일하지 체크
     if('user_id' not in session or post.user_id != session['user_id']):
@@ -88,7 +91,7 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
 
-    return redirect(url_for('board.list_post', page=page, per_page=per_page, option=option, keyword=keyword))
+    return redirect(url_for('board.list_post',page=page,per_page=per_page,option=option,keyword=keyword))
 
 
 @board.route('/modify/<int:post_id>', methods=['POST'])
@@ -103,9 +106,10 @@ def modify_post(post_id):
     post.content = content
     post.created_at = datetime.now()
     db.session.commit()
-
-    return redirect(url_for('board.list_post'))
     
+    response = {'title': post.title,'content':content}
+    return jsonify(response)
+
 
 # paging 테스트를 위해 , 게시물 100개 작성
 @board.route('/hiddencreate')
@@ -115,7 +119,8 @@ def create_posts():
         content = f"게시물 내용 {random.randint(1, 100)}"
         author = session['username']
         new_post = Post(title=title, content=content, author=author,
-                        created_at=datetime.now(), view=0, like=0, user_id=session['user_id'])  # 새로운 게시물 생성
+                        created_at=datetime.now(), view=0, like=0,user_id=session['user_id'])  # 새로운 게시물 생성
+
         db.session.add(new_post)  # 새로운 게시물 추가
     db.session.commit()
     print("게시물 생성이 완료되었습니다.")

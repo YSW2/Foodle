@@ -1,0 +1,59 @@
+.PostForm{
+  display: grid;
+  grid-template-rows: 11fr 2fr;
+  max-width: 800px;
+  background-color: #fbedd5;
+  margin: 20px auto;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+  .ContentSubmit {
+  }
+
+  .TopContent{
+    display: flex;
+    flex-direction: column;
+  }
+  .Title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .Info {
+    font-size: 14px;
+    color: #888;
+    margin-bottom:0px;
+  }
+.LikeModify{
+  display: flex;
+  justify-content: space-between;
+}
+  .Content {
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin: 5px 0px 10px 0px;
+    border: 1px solid #abe9fa;
+    resize: none;
+    padding: 8px;
+    outline-color: #fbedd5;
+}
+
+#content {
+  background-color: #ffff; 
+}
+
+.FtnBtn{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.FtnBtn:hover{
+  cursor: pointer;
+}
+.btn-warning{
+  margin-right: 2px;
+  height: 30px
+}

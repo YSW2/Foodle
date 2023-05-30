@@ -11,54 +11,56 @@
    <link rel="stylesheet" href="static/topbar.css">
    <link rel="stylesheet" href="static/post.css">
 
+
+   <!-- Top Bar -->
    <title>{{ post.title }}</title>
   </head>
   <body>
     <div id="Topbar" class="Tobar">
       <ul class="Topul">
-          <a href="{{ url_for('board.list_post') }}"class="Topa" id="init">Foodle</a>
-          <a href="/home" class="Topa" id="mainpage">Welcome to Foodle!</a>
+        <a href="/home"class="Topa" id="init">Foodle</a>
+        <a href="{{ url_for('board.list_post') }}" class="Topa" id="mainpage">Welcome to Recipe!</a>
       </ul>
     </div>
 
 
-
-
-
+  <div class="PostForm">
     <form class="ContentSubmit" action="{{url_for('board.modify_post',post_id=post.id)}}" method="post">
       <div class="ContentForm">
-        <input type="text" name="title" id="title" placeholder=" 제목을 입력해 주세요." value="{{ post.title }}" readonly ></input>
-        <span >작성자: {{ post.author }} | 작성일: {{ post.created_at }}</span>
-        <input type="text" name="content" id="content" placeholder=" 내용을 입력해 주세요." value="{{ post.content }}" readonly></input>
-        <span>조회수: {{ post.view }}</span>
-        <span id="Like">좋아요: {{ post.like }}</span>
+        <div class="TopContent">
+          <input class="Title" type="text"  name="title"  id="title" placeholder=" 제목을 입력해 주세요." value="{{ post.title }}" readonly ></input>
+          <div class="Info" >작성자: {{ post.author }} | 
+            작성일: {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+          <span class="Info">조회수: {{ post.view }}</span>
+          <div class="LikeModify">
+            <span class="Info" id="like">좋아요: {{ post.like }}</span>
+            <button type="button" class="btn btn-warning" id="ModifyBtn" onclick="modifyButtons()">수정</button>
+            <button type="submit" class="btn btn-warning" id="ModifyRegisterBtn" onclick="modifyButtons()" style="display: none;">등록</button>
+          </div>
+        </div>
+        <textarea class="form-control Content" name="content" id="content" rows="10" cols="100"  readonly>{{ post.content }}</textarea>
       </div>
-      <button type="button" id="ModifyBtn" onclick="modifyButtons()">수정</button>
-      <button type="submit" id="ModifyRegisterBtn" style="display: none;">등록</button>
     </form>
+
+    <div class="FtnBtn">
+      <form action="{{ url_for('board.delete_post',post_id=post.id,page=page,per_page=per_page,option=option,keyword=keyword) }}" method="POST" id="DeleteBtn" >
+        <button type="button" class="btn btn-warning" onclick="confirmDelete()">삭제</button>
+      </form>
+
+      <form method="post" id="likebtn">
+        <button type="submit" class="btn btn-warning">좋아요</button>
+      </form>
+
+      <a href="{{ url_for('board.list_post',page=page,per_page=per_page,option=option,keyword=keyword) }}">
+        목록
+      </a>    
+    </div> 
   
-    <a href="{{ url_for('board.list_post',page=page,per_page=per_page,option=option,keyword=keyword) }}">
-      목록
-    </a>
-
-    <form method="POST" id="LikeBtn">
-      <button type="submit">좋아요</button>
-    </form>
-    
-   
-    <form action="{{ url_for('board.delete_post',post_id=post.id,page=page,per_page=per_page,option=option,keyword=keyword) }}" method="POST" id="DeleteBtn" >
-      <button type="button" onclick="confirmDelete()">삭제</button>
-    </form>
-
-   
-
-    
-
-
-
+</div>
 
 
 <script>
+
 function confirmDelete() {
         if (confirm("삭제하시겠습니까?")) {
           $("#DeleteBtn").submit();
@@ -66,13 +68,14 @@ function confirmDelete() {
       }
 
       $(document).ready(function() {
-        $("#LikeBtn").submit(function(event){
+
+        $("#likebtn").submit(function(event){
           event.preventDefault();
           $.ajax({
             url: "{{ url_for('board.Like_post', post_id=post.id) }}",
             method: 'POST',
             success: function(response) {
-              $("#Like").html("좋아요: "+response.like)
+              $("#like").html("좋아요: "+response.like)
             },
             error: function(status, error) {
               alert("error");
@@ -82,33 +85,52 @@ function confirmDelete() {
         });
       });
 
+  $(".ContentSubmit").submit(function(event) {
+    event.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+    var formData = form.serialize();
 
-
+    $.ajax({
+      method: "POST",
+      url: url,
+      data: formData,
+      success: function(response) {
+        $("#title").html(response.title)
+        $("#content").html(response.content)
+        alert("수정을 완료했습니다.");
+      },
+      error: function(xhr, status, error) {
+        alert("error");
+      }
+    });
+  });
 
       function modifyButtons() {
         var modifyBtn = document.getElementById("ModifyBtn");
         var modifyRegisterBtn = document.getElementById("ModifyRegisterBtn");
 
+        var titleInput = document.getElementById("title");
+        var contentInput = document.getElementById("content");
+
         if (modifyBtn.style.display === "none") {
           // 수정 버튼이 사라져 있을 때
           modifyBtn.style.display = "block";
           modifyRegisterBtn.style.display = "none";
+
+          // readonly 속성 추가
+          titleInput.setAttribute("readonly", true);
+          contentInput.setAttribute("readonly", true);
         } else {
           // 수정 버튼이 보여질 때
           modifyBtn.style.display = "none";
           modifyRegisterBtn.style.display = "block";
-        }
 
-        var titleInput = document.getElementById("title");
-        var contentInput = document.getElementById("content");
-
-        if (titleInput.hasAttribute("readonly")) {
-          // readonly 속성이 존재하는 경우
+          // readonly 속성 제거
           titleInput.removeAttribute("readonly");
           contentInput.removeAttribute("readonly");
         }
       }
-
 </script>
     
   </body>
