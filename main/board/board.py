@@ -3,8 +3,11 @@ from models import Post , Like
 from app import db
 from board import board
 from datetime import datetime
-from flask_paginate import Pagination,  get_page_args
 from sqlalchemy import or_
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import pandas as pd
+import seaborn as sns
 import random
 
 
@@ -30,7 +33,6 @@ def list_post():
         
     posts = posts.paginate(page=page,per_page=per_page)
     return render_template('list_post.html', posts=posts,option=option,keyword=keyword)
-
 
 
 @board.route('/upload', methods=['GET', 'POST'])
@@ -63,7 +65,6 @@ def show_post(post_id):
     post.view += 1
     db.session.commit()
     return render_template('post.html', post=post,page=page,per_page=per_page,option=option,keyword=keyword)
-
 
 
 @board.route('/<int:post_id>', methods=['POST'])
@@ -128,9 +129,6 @@ def modify_post(post_id):
     response = {'title': post.title,'content':content}
     return jsonify(response)
 
-@board.route('/rank')
-def rank():
-    return render_template('rank.html')
 
 # paging 테스트를 위해 , 게시물 100개 작성
 @board.route('/hiddencreate')
@@ -140,7 +138,7 @@ def create_posts():
         content = f"게시물 내용 {random.randint(1, 100)}"
         author = session['username']
         new_post = Post(title=title, content=content, author=author,
-                        created_at=datetime.now(), view=0, like=0,user_id=session['user_id'])  # 새로운 게시물 생성
+                        created_at=datetime.now(), view=random.randint(1, 100), like=random.randint(1, 100),user_id=session['user_id'])  # 새로운 게시물 생성
 
         db.session.add(new_post)  # 새로운 게시물 추가
     db.session.commit()
@@ -154,3 +152,49 @@ def delete_all_posts():
     db.session.query(Post).delete()
     db.session.commit()
     return redirect(url_for('board.list_post'))
+
+
+@board.route('/rank', methods=['GET'])
+def show_top_posts():
+    create_graph('like')
+    create_graph('view')
+
+    return render_template('rank.html')
+
+def create_graph(column):
+    if column == 'like':
+        top_posts = Post.query.order_by(Post.like.desc()).limit(30).all()
+        df = pd.DataFrame([{
+        'title': post.title,
+        'like': post.like
+    } for post in top_posts])
+        
+    elif column == 'view':
+        top_posts = Post.query.order_by(Post.view.desc()).limit(30).all()
+        df = pd.DataFrame([{
+        'title': post.title,
+        'view': post.view
+    } for post in top_posts])
+
+    
+
+    sns.set_theme(style="white")
+    sns.set_context("talk", font_scale=0.6)
+    mpl.rcParams['axes.unicode_minus'] = False
+    plt.rcParams['font.family'] = 'Malgun Gothic'
+    
+    for i in range(6):
+        plt.figure(figsize=(10, 5))
+        ax = sns.barplot(x=f'{column}', y='title', data=df[i*5:i*5+5])
+
+        plt.xlabel('')
+        plt.ylabel('')
+        plt.xticks([])
+        plt.box(False)
+
+        for p in ax.patches:
+            x, y, width, height = p.get_bbox().bounds
+            ax.text(width*1.01, y+height/2, int(width), va='center')
+
+        plt.savefig(f'./board/templates/{column}_graph{i+1}.png')
+        plt.close()
