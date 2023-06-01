@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, url_for, request, jsonify, abort
-from models import Post
+from models import Post , Like
 from app import db
 from board import board
 from datetime import datetime
@@ -68,7 +68,25 @@ def show_post(post_id):
 
 @board.route('/<int:post_id>', methods=['POST'])
 def Like_post(post_id):
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
     post = Post.query.get_or_404(post_id)
+    
+    user_id = session.get('user_id')
+    existing_like = Like.query.filter_by(post_id=post_id, user_id=user_id).first()
+    print(existing_like)
+    if existing_like:
+        # 이미 좋아요를 누른 경우, 좋아요를 취소하고 데이터 삭제
+        db.session.delete(existing_like)
+        post.like -= 1
+        db.session.commit()
+        response = {'like': post.like}
+        return jsonify(response)
+
+    
+    # 좋아요를 누른 경우, 데이터 추가 및 좋아요 수 증가
+    new_like = Like(post_id=post_id, user_id=user_id)
+    db.session.add(new_like)
     post.like += 1
     db.session.commit()
     response = {'like': post.like}
@@ -110,6 +128,9 @@ def modify_post(post_id):
     response = {'title': post.title,'content':content}
     return jsonify(response)
 
+@board.route('/rank')
+def rank():
+    return render_template('rank.html')
 
 # paging 테스트를 위해 , 게시물 100개 작성
 @board.route('/hiddencreate')

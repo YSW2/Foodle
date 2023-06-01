@@ -33,3 +33,9 @@ class Fridge(db.Model):
     food = db.Column(db.Text, nullable=False)
     exp_date = db.Column(db.Date, nullable=True)
     user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+class Like(db.Model):
+    __tablename__ = 'like'
+    
+    post_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
