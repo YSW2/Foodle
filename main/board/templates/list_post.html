@@ -40,7 +40,7 @@
     <button type="submit" class="btn btn-outline-warning">검색</button>
     <div class="WriteRanking">
       <a href="/board/upload" class="link-warning">글쓰기</a>
-      <a href="/board/rank" class="link-warning">랭킹</a>
+      <a href="{{ url_for('board.show_top_posts',type='view') }}" class="link-warning">랭킹</a>
     </div> 
   </form>
 

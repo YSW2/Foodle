@@ -1,0 +1,35 @@
+
+
+.RankContent{
+  display: flex;
+  flex-direction: column;
+}
+
+.ViewLikeBtn{
+  display: flex;
+  justify-content: center;
+}
+
+.ViewLikeBtn button {
+  margin: 0 5px;
+}
+
+
+/* 이전 버튼 스타일 변경 */
+.carousel-control-prev-icon {
+background-color: rgb(245, 200, 124); /* 원하는 색상으로 변경 */
+}
+
+/* 다음 버튼 스타일 변경 */
+.carousel-control-next-icon {
+background-color: rgb(245, 200, 124); /* 원하는 색상으로 변경 */
+}
+
+/* 슬라이드 표시 버튼 색상 변경 */
+.carousel-indicators [data-bs-target] {
+background-color: rgb(245, 200, 124); /* 원하는 색상으로 변경 */
+}
+
+.BoardLink{
+  text-align: center;
+}

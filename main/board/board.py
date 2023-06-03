@@ -11,6 +11,7 @@ import seaborn as sns
 import random
 
 
+
 @board.route('/', methods=['GET', 'POST'])
 def list_post():
     page = request.args.get('page',type=int,default=1)
@@ -69,8 +70,10 @@ def show_post(post_id):
 
 @board.route('/<int:post_id>', methods=['POST'])
 def Like_post(post_id):
+    
     if 'user_id' not in session:
-        return redirect(url_for('auth.login'))
+        return
+    
     post = Post.query.get_or_404(post_id)
     
     user_id = session.get('user_id')
@@ -156,12 +159,13 @@ def delete_all_posts():
 
 @board.route('/rank', methods=['GET'])
 def show_top_posts():
-    create_graph('like')
-    create_graph('view')
+    type = request.args.get('type',type=str,default='view')
+    create_graph(type)
 
-    return render_template('rank.html')
+    return render_template('rank.html',type=type)
 
 def create_graph(column):
+    mpl.use('Agg')
     if column == 'like':
         top_posts = Post.query.order_by(Post.like.desc()).limit(30).all()
         df = pd.DataFrame([{
@@ -175,16 +179,14 @@ def create_graph(column):
         'title': post.title,
         'view': post.view
     } for post in top_posts])
-
     
-
-    sns.set_theme(style="white")
+    sns.set_style("darkgrid")
     sns.set_context("talk", font_scale=0.6)
     mpl.rcParams['axes.unicode_minus'] = False
     plt.rcParams['font.family'] = 'Malgun Gothic'
     
     for i in range(6):
-        plt.figure(figsize=(10, 5))
+        plt.figure(figsize=(10, 4))
         ax = sns.barplot(x=f'{column}', y='title', data=df[i*5:i*5+5])
 
         plt.xlabel('')
@@ -195,6 +197,7 @@ def create_graph(column):
         for p in ax.patches:
             x, y, width, height = p.get_bbox().bounds
             ax.text(width*1.01, y+height/2, int(width), va='center')
-
-        plt.savefig(f'./board/templates/{column}_graph{i+1}.png')
+        
+        plt.title(f'Top {(i+1)*5} {column.capitalize()} Posts - Group {i+1}')
+        plt.savefig(f'./board/static/graph/{column}_graph{i+1}.png')
         plt.close()
