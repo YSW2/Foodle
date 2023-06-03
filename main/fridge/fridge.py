@@ -1,12 +1,28 @@
 from flask import render_template, request, redirect, url_for, session, jsonify ,abort
 from fridge import fridge
 from app import db
+from app import app
 from models import Fridge
-from datetime import datetime
+from datetime import datetime, timedelta
+from apscheduler.schedulers.background import BackgroundScheduler
 import openai_api.openai_api as openai_api
 
 
 openai_bot = openai_api.openai_bot()
+
+
+def delete_expired_foods():
+    with app.app_context():
+        expired_foods = Fridge.query.filter(Fridge.exp_date < datetime.today().date()).all()
+        for food in expired_foods:
+            db.session.delete(food)
+        db.session.commit()
+
+
+scheduler = BackgroundScheduler()
+start_time = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+scheduler.add_job(func=delete_expired_foods, trigger='interval', hours=24, start_date=start_time)
+scheduler.start()
 
 
 @fridge.route('/', methods=['GET'])

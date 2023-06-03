@@ -11,7 +11,9 @@ DB_NAME = "database.db"
 # Flask 애플리케이션 생성
 
 
+
 def create_app():
+    global app 
     app = Flask(__name__)
 
     # 애플리케이션 설정

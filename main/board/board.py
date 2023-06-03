@@ -11,7 +11,6 @@ import seaborn as sns
 import random
 
 
-
 @board.route('/', methods=['GET', 'POST'])
 def list_post():
     page = request.args.get('page',type=int,default=1)
