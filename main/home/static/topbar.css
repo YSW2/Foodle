@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#Topbar{
+  width : 100%;
+}
+
+
+.Topul {
+  list-style-type: none;
+  height: 48px;
+  width: 100%;
+  background-color: rgb(245, 200, 124);
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+}
+
+
+.TopLogout {
+  color: black;
+  display: flex;
+  font-weight: bold;
+  text-decoration: none;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+#logo {
+  color:white;
+  font-size: 18px;
+  padding-left:40px;
+  margin-right:auto;
+  display: flex;
+}
+
+#init{
+  width: 50px;
+}
+
+#mainpage{
+  width: 160px
+}

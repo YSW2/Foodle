@@ -34,6 +34,7 @@ class Fridge(db.Model):
     exp_date = db.Column(db.Date, nullable=True)
     user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
     
+    
 class Like(db.Model):
     __tablename__ = 'like'
     
